@@ -84,7 +84,7 @@ class Scanner {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
                 } else if (match('*')) {
-                        multiline();
+                        multilineComment();
                 } else {
                     addToken(SLASH);
                 }
@@ -157,7 +157,7 @@ class Scanner {
         addToken(STRING, value);
     }
 
-    private void multiline() {
+    private void multilineComment() {
         while (peek() != '*' && !isAtEnd()) {
             if (peek() == '\n') line++;
             advance();
@@ -170,7 +170,7 @@ class Scanner {
 
         // Consume '*'
         advance();
-        if (peek() != '/') multiline();
+        if (peek() != '/') multilineComment();
 
         if (!isAtEnd()) {
             // Consume '/'
